@@ -46,6 +46,7 @@ class FighterManager
 					}
 				}\'>
 					<img src="'.$fighter->img.'" alt="Fighter Box 1" width="150" height="150">
+					<button id="editFigther" class="btn btn-secondary mb-4 btn-lg"><a href="./edit_fighter_form.php?id='.$fighter->id.'" style="color:white">Edit</a></button>
 				</div>
 			</div>';
 	}

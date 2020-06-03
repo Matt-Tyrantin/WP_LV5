@@ -33,12 +33,12 @@
 			$losses = $_POST['losses'];
 			$img    = $_FILES['img'];
 
-			if ($name   == null)				   return false;
-			if ($age    == null || $age < 0)    return false;
-			if ($info   == null)				   return false;
-			if ($wins   == null || $wins < 0)   return false;
-			if ($losses == null || $losses < 0) return false;
-			if ($img    == null)				   return false;
+			if ($name   == null)				     return false;
+			if ($age    == null || $age < 0)     return false;
+			if ($info   == null)				     return false;
+			if ($wins   == null || $wins < 0)    return false;
+			if ($losses == null || $losses < 0)  return false;
+			if (filesize($img['tmp_name']) == 0) return false;
 
 			$path = $this->path.basename($img['name']);
 			if (!move_uploaded_file($img['tmp_name'], $path)) return;

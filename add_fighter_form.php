@@ -12,9 +12,6 @@
     />
 </head>
 <body>
-    <?php
-        include './src/fighter_manager.php';
-    ?>
     <section class="container d-flex flex-column  align-items-center mb-4">
         <h1>CFC 3</h1>
         <h2>Create your fighter</h2>

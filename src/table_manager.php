@@ -102,7 +102,15 @@
 			// Remove the last AND expression
 			$sql = substr($sql, 0, -5);
 
-			return Connection::GetConnection()->query($sql);
+			if (Connection::GetConnection()->query($sql)) {
+				// Because choosing fighters is dependant on their IDs (e.g. fighter with ID 1 is first in line), there must not
+				// be any empty rows between IDs
+				Connection::GetConnection()->query('ALTER TABLE '.$this->database.'.'.$this->table.' AUTO_INCREMENT=1');
+
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		/**
@@ -125,9 +133,6 @@
 			// Remove the last comma
 			$sql = substr($sql, 0, -1);
 			$sql .= ' WHERE '.$whereKey.'='.$whereValue;
-
-			echo $sql;
-			echo '<br>';
 
 			return Connection::GetConnection()->query($sql);
 		}

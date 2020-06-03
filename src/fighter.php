@@ -71,6 +71,22 @@
 		}
 
 		/**
+		*	Updates the fighter's information in the database. Retruns true if update is successful
+		*/
+		public function UpdateDB()
+		{
+			$manager = new \Database\TableManager('fighter_game', 'fighter_cats');
+			$manager->addColumn('name', $this->name);
+			$manager->addColumn('age', $this->age);
+			$manager->addColumn('info', $this->info);
+			$manager->addColumn('wins', $this->record->GetWins());
+			$manager->addColumn('losses', $this->record->GetLosses());
+			$manager->addColumn('img', $this->img);
+
+			return $manager->UpdateRow('id', $this->id);
+		}
+
+		/**
 		*	Adds a single win to the fighter's record in database. Returns true if addition is successful
 		*/
 		public function AddWin()
