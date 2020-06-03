@@ -10,10 +10,12 @@
 	{
 		protected $row;
 
+		private $database;
 		private $table;
 
-		public function __construct($table)
+		public function __construct($database, $table)
 		{
+			$this->database = $database;
 			$this->table = $table;
 			$this->row = array();
 		}
@@ -57,11 +59,11 @@
 		}
 
 		/**
-		*	Inserts modified column into connected table
+		*	Inserts modified row into connected table. Returns true if row has been inserted.
 		*/
-		public function InsertColumn()
+		public function InsertRow()
 		{
-			$sql = 'INSERT INTO '.$this->table.'(';
+			$sql = 'INSERT INTO '.$this->database.'.'.$this->table.'(';
 
 			foreach ($this->row as $col => $value) {
 				$sql .= $col.',';
@@ -72,16 +74,62 @@
 			$sql .= ') VALUES (';
 
 			foreach ($this->row as $col => $value) {
-				$sql .= "'".$value."',";
+				if (is_numeric($value)) {
+					$sql .= $value.',';
+				} else {
+					$sql .= "'".$value."',";
+				}	
 			}
 
 			// Remove the last comma
 			$sql = substr($sql, 0, -1);
 			$sql .= ')';
 
-			if (!Connection::GetConnection()->query($sql)) {
-				die('Error inserting data into table.');
+			return Connection::GetConnection()->query($sql);
+		}
+
+		/**
+		*	Removes a row which contains given columns and their values. Returns true if row has been removed
+		*/
+		public function RemoveRow()
+		{
+			$sql = 'DELETE FROM '.$this->database.'.'.$this->table.' WHERE ';
+
+			foreach ($this->row as $col => $value) {
+				$sql .= $col.'='.$value.' AND ';
 			}
+
+			// Remove the last AND expression
+			$sql = substr($sql, 0, -5);
+
+			return Connection::GetConnection()->query($sql);
+		}
+
+		/**
+		*	Updates columns in a row where $whereKey and $whereValue match (preferably ID). Returns true if the 
+		*	update was successful
+		*/
+		public function UpdateRow($whereKey, $whereValue)
+		{
+			$sql = 'UPDATE '.$this->database.'.'.$this->table.' SET ';
+
+			foreach ($this->row as $col => $value) {
+				$sql .= $col.'=';
+				if (is_numeric($value)) {
+					$sql .= $value.',';
+				} else {
+					$sql .= "'".$value."',";
+				}	
+			}
+
+			// Remove the last comma
+			$sql = substr($sql, 0, -1);
+			$sql .= ' WHERE '.$whereKey.'='.$whereValue;
+
+			echo $sql;
+			echo '<br>';
+
+			return Connection::GetConnection()->query($sql);
 		}
 	}
 

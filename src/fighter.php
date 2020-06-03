@@ -1,6 +1,7 @@
 <?php
 	namespace Game;
 
+	require_once 'connection.php';
 	require_once 'table_manager.php';
 	require_once 'record.php';
 
@@ -23,19 +24,72 @@
 			$this->img = $img;
 		}
 
-		/**
-		*	Records the fighter into the connected database
-		*/
-		private function InsertIntoDB()
+		public static function GetFighterByID($id)
 		{
-			$manager = new \Database\TableManager('fighter_cats');
+			$sql = 'SELECT name, age, info, wins, losses, img FROM fighter_game.fighter_cats WHERE id='.$id.' LIMIT 1';
+			$connection = \Database\Connection::GetConnection();
+			$result = $connection->query($sql) or die ($connection->error);
+			$result = mysqli_fetch_assoc($result);
+
+			return new Fighter(
+				$result['name'],
+				$result['age'],
+				$result['info'],
+				$id,
+				$result['wins'],
+				$result['losses'],
+				$result['img']
+			);
+		}
+
+		/**
+		*	Records the fighter into the connected database. Retruns true if fighter has been inserted
+		*/
+		public function InsertIntoDB()
+		{
+			$manager = new \Database\TableManager('fighter_game', 'fighter_cats');
 			$manager->addColumn('name', $this->name);
 			$manager->addColumn('age', $this->age);
 			$manager->addColumn('info', $this->info);
 			$manager->addColumn('wins', $this->record->GetWins());
 			$manager->addColumn('losses', $this->record->GetLosses());
 			$manager->addColumn('img', $this->img);
-			$manager->insertColumn();
+
+			return $manager->InsertRow();
+		}
+
+		/**
+		*	Removes the fighter with matching criteria from the connected database. Returns true if 
+		*	the fighter has been removed
+		*/
+		public function RemoveFromDB()
+		{
+			$manager = new \Database\TableManager('fighter_game', 'fighter_cats');
+			$manager->addColumn('id', $this->id);
+
+			return $manager->RemoveRow();
+		}
+
+		/**
+		*	Adds a single win to the fighter's record in database. Returns true if addition is successful
+		*/
+		public function AddWin()
+		{	
+			$manager = new \Database\TableManager('fighter_game', 'fighter_cats');
+			$manager->addColumn('wins', $this->record->AddWin());
+
+			return $manager->UpdateRow('id', $this->id);
+		}
+
+		/**
+		*	Adds a single loss to the figther's record in database. Returns true if addition is successful
+		*/
+		public function AddLoss()
+		{
+			$manager = new \Database\TableManager('fighter_game', 'fighter_cats');
+			$manager->addColumn('wins', $this->record->AddLoss());
+
+			return $manager->UpdateRow('id', $this->id);
 		}
 	}
 

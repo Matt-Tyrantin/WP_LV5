@@ -1,6 +1,9 @@
 <?php
 	namespace Game;
 
+	/**
+	*	Class for more secure manipulation over fighters' wins and losses
+	*/
 	class Record 
 	{
 		private $wins;
@@ -12,24 +15,36 @@
 			$this->losses = $losses;
 		}
 
+		/**
+		*	Retrusn the number of recorded wins
+		*/
 		public function GetWins() 
 		{
 			return $this->wins;
 		}
 
+		/**
+		*	Retrusn the number of recoreded losses
+		*/
 		public function GetLosses() 
 		{
 			return $this->losses;
 		}
 
+		/**
+		*	Adds one win to the record and immediatly returns it
+		*/
 		public function AddWin() 
 		{
-			++$this->wins;
+			return ++$this->wins;
 		}
 
+		/**
+		*	Adds one loss to the record and immediatly returns it
+		*/
 		public function AddLoss() 
 		{
-			++$this->losses;
+			return ++$this->losses;
 		}
 	}
 

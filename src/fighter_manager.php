@@ -7,7 +7,7 @@ require_once 'fighter.php';
 
 class FighterManager 
 {
-	public static function fetchAllFighters()
+	public static function FetchAllFighters()
 	{
 		$sql = 'SELECT id, name, age, info, wins, losses, img FROM fighter_game.fighter_cats';
 

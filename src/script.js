@@ -148,6 +148,13 @@ function fight() {
 				let imgNode2 = document.querySelector(SIDE_ID_2 + ' .featured-cat-fighter-image');
 				let result = calculateFight(fighter1, fighter2);
 
+				//window.location = 'simulation_end.php?winner=' + result.winner.id + '&loser=' + result.loser.id;
+
+				let xhr = new XMLHttpRequest();
+				xhr.open('POST', 'simulation_end.php', true);
+				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				xhr.send('winner=' + result.winner.id + '&loser=' + result.loser.id);
+
 				result.winner.record.wins += 1;
 				result.loser.record.loss += 1;
 
@@ -164,7 +171,7 @@ function fight() {
 					imgNode2.style.border = 'solid green 6px';
 				}
 				
-				messageBox.innerHTML = 'Winner is ' + result.winner.name + '!!!';
+				messageBox.innerHTML = 'Winner is ' + result.winner.name + '!!';
 
 				updateSelection();
 

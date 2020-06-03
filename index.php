@@ -75,6 +75,11 @@
             </div>
         </div>
     </div>
-    <script src="./src/app.js"></script>
+    <div class="row">
+        <div class="col-12 d-flex flex-column align-items-center">
+            <button id="generateFight" class="btn btn-primary mb-4 btn-lg"><a href="./add_fighter_form.php" style="color:white">Add new fighter</a></button>
+        </div>
+    </div>
+    <script src="./src/script.js"></script>
 </body>
 </html>
