@@ -4,7 +4,7 @@
 	require_once 'connection.php';
 
 	/**
-	*	Class for easier insertation of data into the database. Can only change one row at a time.
+	*	Class for easier manipulation of data into the database. Can only change one row at a time.
 	*/
 	class TableManager 
 	{

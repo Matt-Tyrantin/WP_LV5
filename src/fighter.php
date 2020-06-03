@@ -24,6 +24,9 @@
 			$this->img = $img;
 		}
 
+		/**
+		*	Fetches a fighter with given ID from the database
+		*/
 		public static function GetFighterByID($id)
 		{
 			$sql = 'SELECT name, age, info, wins, losses, img FROM fighter_game.fighter_cats WHERE id='.$id.' LIMIT 1';
